@@ -24,9 +24,9 @@ const upload = multer({ storage: multer.memoryStorage() });
 // Initialize database tables
 createTables();
 
-// "https://job-board-tau-three.vercel.app" ||
+// 
 app.use(cors({
-  origin:  "http://localhost:3000",
+  origin: "https://job-board-tau-three.vercel.app" || "http://localhost:3000",
   credentials: true
 }));
 app.use(express.json());
