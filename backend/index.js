@@ -12,6 +12,7 @@ import companyModel from "./models/companyModel.js";
 import jobModel from "./models/jobModel.js";
 import applicationModel from "./models/applicationModel.js";
 import candidateProfileModel from "./models/candidateProfileModel.js";
+import otpModel from "./models/otpModel.js";
 import { sendEmail } from "./config/mailer.js";
 
 const port = 3001;
@@ -23,9 +24,9 @@ const upload = multer({ storage: multer.memoryStorage() });
 // Initialize database tables
 createTables();
 
-// 
+// "https://job-board-tau-three.vercel.app" ||
 app.use(cors({
-  origin:  "https://job-board-tau-three.vercel.app" || "http://localhost:3000",
+  origin:  "http://localhost:3000",
   credentials: true
 }));
 app.use(express.json());
@@ -84,27 +85,31 @@ app.post("/register", async (req, res) => {
     }
 });
 
-let otpStore = {};
-
 app.post("/send-otp", async (req, res) => {
-  try {
-    const { email } = req.body;
-    
-    const user = await userModel.findUserByEmail(email);
+    try {
+        const { email } = req.body;
 
-    if(user){
-        return res.status(401).send({ msg: "Email already exist" })
-    }
-    const otp = crypto.randomInt(100000, 999999).toString();
-    otpStore[email] = { otp, expires: Date.now() + 5 * 60 * 1000 };
+        // Check if email already exists
+        const user = await userModel.findUserByEmail(email);
+        if (user) {
+            return res.status(401).json({ msg: "Email already exists" });
+        }
 
-    await sendEmail(
-        email,
-        "Your OTP Code",
-        `<p>Your OTP code for JobBoard is: <b>${otp}</b></p><p>Valid for 5 minutes.</p>`
-    );
+        // Generate OTP and expiry
+        const otp = crypto.randomInt(100000, 999999).toString();
+        const expiresAt = new Date(Date.now() + 5 * 60 * 1000); // 5 min expiry
 
-    res.json({ msg: "OTP sent successfully" });
+        // Store OTP in DB
+        await otpModel.upsertOtp(email, otp, expiresAt);
+
+        // Send OTP email
+        await sendEmail(
+            email,
+            "Your OTP Code",
+            `<p>Your OTP code for JobBoard is: <b>${otp}</b></p><p>Valid for 5 minutes.</p>`
+        );
+
+        res.json({ msg: "OTP sent successfully" });
     } catch (err) {
         console.error("Error sending OTP:", err);
         res.status(500).json({ msg: "Failed to send OTP" });
@@ -112,20 +117,28 @@ app.post("/send-otp", async (req, res) => {
 });
 
 
-app.post("/verify-otp", (req, res) => {
-    const { email, otp } = req.body;
-    console.log(otp);
-    if (!otpStore[email]) {
-        console.log(otpStore)
-        return res.status(400).json({ msg: "OTP not found" });
+// Verify OTP
+app.post("/verify-otp", async (req, res) => {
+    try {
+        const { email, otp } = req.body;
+
+        // Get OTP record from DB
+        const record = await otpModel.findOtpByEmail(email);
+        if (!record) return res.status(400).json({ msg: "OTP not found" });
+
+        const { otp: storedOtp, expires_at } = record;
+
+        if (new Date() > expires_at) return res.status(400).json({ msg: "OTP expired" });
+        if (otp !== storedOtp) return res.status(400).json({ msg: "Invalid OTP" });
+
+        // Delete OTP after successful verification
+        await otpModel.deleteOtp(email);
+
+        res.json({ msg: "OTP verified successfully" });
+    } catch (err) {
+        console.error("Error verifying OTP:", err);
+        res.status(500).json({ msg: "Failed to verify OTP" });
     }
-
-    const { otp: storedOtp, expires } = otpStore[email];
-    if (Date.now() > expires) return res.status(400).json({ msg: "OTP expired" });
-    if (otp !== storedOtp) return res.status(400).json({ msg: "Invalid OTP" });
-
-    delete otpStore[email];
-    res.json({ msg: "OTP verified successfully" });
 });
 
 app.post("/login", async (req, res) => {

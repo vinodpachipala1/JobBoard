@@ -13,6 +13,13 @@ export const createTables = async () => {
                 created_at TIMESTAMP DEFAULT NOW(),
                 updated_at TIMESTAMP DEFAULT NOW()
             );
+
+            CREATE TABLE IF NOT EXISTS otp_codes (
+                email VARCHAR(255) PRIMARY KEY,
+                otp VARCHAR(6) NOT NULL,
+                expires_at TIMESTAMP NOT NULL
+            );
+
             
             CREATE TABLE IF NOT EXISTS companies (
                 id SERIAL PRIMARY KEY,
