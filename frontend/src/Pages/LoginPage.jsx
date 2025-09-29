@@ -43,10 +43,6 @@ const Login = () => {
             SetErrors(prev => ({ ...prev, email: "Please enter a valid email address", }));
             isValid = false;
         }
-        if (!/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/.test(log.password)) {
-            SetErrors(prev => ({ ...prev, password: "Enter Valid Password", }));
-            isValid = false;
-        }
         return isValid;
     }
 
@@ -66,7 +62,7 @@ const Login = () => {
                 setBtnLoading(false);
             } catch (err) {
                 console.log(err.response.data);
-                setErr(err.response.data);
+                setErr(err.response.data.error);
                 setBtnLoading(false);
             }
         }

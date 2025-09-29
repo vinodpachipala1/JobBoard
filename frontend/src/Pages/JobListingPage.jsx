@@ -1,6 +1,5 @@
 import React, { useEffect, useState, useMemo } from 'react';
-import { useNavigate } from 'react-router-dom';
-import Header from '../Componenets/common/header';
+import { useNavigate, useLocation } from 'react-router-dom';
 import Footer from '../Componenets/common/footer';
 import axios from 'axios';
 import BASE_URL from '../Componenets/Path';
@@ -18,6 +17,7 @@ const JobCardSkeleton = () => (
 );
 
 const JobListPage = () => {
+    const location = useLocation();
     const navigate = useNavigate();
     const [jobs, setJobs] = useState([]);
     const [displayedJobs, setDisplayedJobs] = useState([]);
@@ -35,6 +35,25 @@ const JobListPage = () => {
         category: "All",
         location: ""
     });
+
+    useEffect(() => {
+        if(!location.state){
+            return
+        }
+        const {title, location: locationFromState} = location.state; // Rename to avoid conflict
+        const titleFromUrl = title || '';
+        const locationFromUrl = locationFromState || '';
+
+        if (titleFromUrl) {
+            setSearchTerm(titleFromUrl);
+        }
+        if (locationFromUrl) {
+            setFilters(prev => ({
+                ...prev,
+                location: locationFromUrl
+            }));
+        }
+    }, [location.state]);
 
     useEffect(() => {
         window.scrollTo(0, 0);
@@ -140,7 +159,6 @@ const JobListPage = () => {
 
     return (
         <div className="flex flex-col min-h-screen">
-            <Header />
             <div className="flex-1 bg-gray-50">
                 {/* Hero Section with Search */}
                 <div className="relative overflow-hidden bg-[url('../public/home1.png')] bg-cover bg-center m-4 text-white">

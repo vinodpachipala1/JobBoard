@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import Header from '../Componenets/common/header';
 import Footer from '../Componenets/common/footer';
 import axios from 'axios';
 import BASE_URL from '../Componenets/Path';
@@ -130,7 +129,6 @@ const JobDetailPage = () => {
 
     return (
         <div className="flex flex-col min-h-screen">
-            <Header />
             <div className='p-4 flex-1'>
                 {/* Breadcrumb Navigation */}
                 {job ? (<><nav className="bg-white border-b border-gray-200">

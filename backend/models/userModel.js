@@ -4,7 +4,7 @@ export const userModel = {
     async createUser(email, firstName, lastName, hashedPassword, role) {
         const result = await db.query(
             `INSERT INTO users (email, first_name, last_name, password, user_type) 
-             VALUES($1, $2, $3, $4, $5) RETURNING id, email, first_name, last_name, user_type`,
+            VALUES($1, $2, $3, $4, $5) RETURNING id, email, first_name, last_name, user_type`,
             [email, firstName, lastName, hashedPassword, role]
         );
         return result.rows[0];

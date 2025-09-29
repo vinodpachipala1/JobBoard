@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate, useLocation, Outlet } from 'react-router-dom';
 import axios from 'axios';
 import BASE_URL from '../Componenets/Path';
-import Header from '../Componenets/common/header';
 import Footer from '../Componenets/common/footer';
 
 const CandidateDashboard = () => {
@@ -60,7 +59,6 @@ const CandidateDashboard = () => {
 
     return (
         <div className="flex flex-col min-h-screen">
-            <Header />
             <div className="bg-gray-50 flex-1">
                 <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-8">
                     <h1 className="text-3xl font-bold text-gray-800 mb-6">Candidate Dashboard</h1>

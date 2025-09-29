@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import axios from "axios";
 import BASE_URL from "../Componenets/Path"
 import { useNavigate } from "react-router-dom";
-import { UserIcon, EnvelopeIcon, LockClosedIcon, BriefcaseIcon, EyeIcon, EyeSlashIcon, ArrowPathIcon } from '@heroicons/react/24/solid';
+import { UserIcon, EnvelopeIcon, LockClosedIcon, BriefcaseIcon, EyeIcon, EyeSlashIcon, ArrowPathIcon, CheckCircleIcon } from '@heroicons/react/24/solid';
 
 const Register = () => {
     const navigate = useNavigate();
@@ -25,13 +25,20 @@ const Register = () => {
         role: ""
     })
 
-
     const [showPassword, setShowPassword] = useState(false);
     const [showConfirmPassword, setShowConfirmPassword] = useState(false);
-
     const [RegbtnLoading, SetButtonLoad] = useState(false);
+    const [err, setErr] = useState("");
     
-    const  [err, setErr] = useState("");
+    // OTP verification states
+    const [otp, setOtp] = useState("");
+    const [showOtpModal, setShowOtpModal] = useState(false);
+    const [otpLoading, setOtpLoading] = useState(false);
+    const [emailVerified, setEmailVerified] = useState(false);
+    const [tempUserData, setTempUserData] = useState(null);
+    const [resendLoading, setResendLoading] = useState(false);
+    const [resendCooldown, setResendCooldown] = useState(0);
+    const [successMessage, setSuccessMessage] = useState("");
 
     const handleOnChange = (e) => {
         const { name, value } = e.target;
@@ -46,6 +53,15 @@ const Register = () => {
 
         setErr("");
     }
+
+    // OTP input handler
+    const handleOtpChange = (e) => {
+        const value = e.target.value;
+        // Only allow numbers and limit to 6 digits
+        if (/^\d*$/.test(value) && value.length <= 6) {
+            setOtp(value);
+        }
+    };
 
     const verify = () => {
         var isValid = true;
@@ -86,17 +102,90 @@ const Register = () => {
         if (verify()) {
             SetButtonLoad(true)
             try {
-                await axios.post(`${BASE_URL}/register`, regData);
+                const otpResponse = await axios.post(`${BASE_URL}/send-otp`, {
+                    email: regData.email,
+                    fname: regData.fname
+                });
+                
                 SetButtonLoad(false);
-                navigate("/login")
+                
+                setTempUserData({...regData});
+                setShowOtpModal(true);
+                setErr("");
+                setSuccessMessage("OTP sent successfully!");
+                
+                setResendCooldown(30);
+                
             } catch (err) {
                 SetButtonLoad(false);
-                setErr(err.response.data.error);
+                setErr(err.response?.data?.msg || "Failed to send OTP");
                 console.log(err);
             }
-        } 
-        
+        }
     }
+
+    const verifyOtp = async () => {
+        if (otp.length !== 6) {
+            setErr("Please enter complete 6-digit OTP");
+            return;
+        }
+
+        setOtpLoading(true);
+        setErr("");
+        setSuccessMessage("");
+        try {
+            const response = await axios.post(`${BASE_URL}/verify-otp`, {
+                email: tempUserData.email,
+                otp: otp
+            });
+            console.log(response.data.msg)
+            if (response.data.msg === "OTP verified successfully") {
+                setEmailVerified(true);
+                
+                const registerResponse = await axios.post(`${BASE_URL}/register`, tempUserData);
+                
+                setOtpLoading(false);
+                setShowOtpModal(false);
+                navigate("/login");
+            }
+        } catch (err) {
+            setOtpLoading(false);
+            setErr(err.response?.data?.error || "Invalid OTP");
+            console.log(err);
+        }
+    };
+
+    const resendOtp = async () => {
+        if (resendCooldown > 0) return;
+        
+        setResendLoading(true);
+        setErr("");
+        setSuccessMessage("");
+        try {
+            await axios.post(`${BASE_URL}/send-otp`, {
+                email: tempUserData.email,
+                fname: tempUserData.fname
+            });
+            setSuccessMessage("New OTP sent successfully!");
+            setOtp("");
+            setResendLoading(false);
+            
+            
+            setResendCooldown(30);
+            
+        } catch (err) {
+            setResendLoading(false);
+            setErr(err.response?.data?.error || "Failed to resend OTP");
+        }
+    };
+
+    React.useEffect(() => {
+        let timer;
+        if (resendCooldown > 0) {
+            timer = setTimeout(() => setResendCooldown(resendCooldown - 1), 1000);
+        }
+        return () => clearTimeout(timer);
+    }, [resendCooldown]);
 
     return (
         <div className="min-h-screen bg-[url('../public/image.png')] bg-cover bg-center flex items-center justify-center p-4">
@@ -105,7 +194,6 @@ const Register = () => {
                     <h1 className="text-3xl font-extrabold text-white tracking-wide">Join Us!</h1>
                     <p className="text-gray-200 mt-1 text-base">Your next big opportunity awaits.</p>
                 </div>
-
 
                 <div className="sm:flex sm:space-x-4">
                     <div className="w-full mb-2 sm:mb-0">
@@ -203,6 +291,79 @@ const Register = () => {
                 </p>
 
             </div>
+
+            {/* OTP Verification Modal */}
+            {showOtpModal && (
+                <div className="fixed inset-0 bg-black/50 flex items-center justify-center p-4 z-50">
+                    <div className="bg-white/10 backdrop-blur-2xl w-full max-w-sm p-6 rounded-xl shadow-lg border-t border-l border-white/20">
+                        <div className="text-center mb-6">
+                            <CheckCircleIcon className="h-12 w-12 text-teal-400 mx-auto mb-2" />
+                            <h2 className="text-2xl font-bold text-white">Verify Your Email</h2>
+                            <p className="text-gray-200 mt-2">
+                                We sent a 6-digit code to <br />
+                                <span className="font-semibold text-teal-300">{tempUserData?.email}</span>
+                            </p>
+                        </div>
+
+                        <div className="mb-6">
+                            <input
+                                type="text"
+                                placeholder="Enter 6-digit OTP"
+                                value={otp}
+                                onChange={handleOtpChange}
+                                onFocus={e => e.target.select()}
+                                className="w-full px-4 py-3 text-center text-white bg-transparent border-2 border-white/30 rounded-lg focus:border-teal-400 focus:outline-none text-lg font-semibold placeholder-gray-400"
+                                maxLength={6}
+                            />
+                        </div>
+
+                        {/* Success Message */}
+                        {successMessage && (
+                            <div className="text-center mb-4">
+                                <span className="text-green-400 text-sm">{successMessage}</span>
+                            </div>
+                        )}
+
+                        {/* Error Message */}
+                        {err && (
+                            <div className="text-center mb-4">
+                                <span className="text-red-400 text-sm">{err}</span>
+                            </div>
+                        )}
+
+                        <button
+                            onClick={verifyOtp}
+                            disabled={otpLoading}
+                            className="btn btn-primary w-full py-2 flex items-center justify-center rounded-lg text-white bg-gradient-to-r from-teal-400 to-sky-600 hover:from-teal-500 hover:to-sky-700 text-base font-semibold transition-all duration-200 mb-3"
+                        >
+                            {otpLoading ? (
+                                <ArrowPathIcon className="animate-spin h-5 w-5 text-white" />
+                            ) : (
+                                "Verify OTP"
+                            )}
+                        </button>
+
+                        <div className="text-center">
+                            <button
+                                onClick={resendOtp}
+                                disabled={resendLoading || resendCooldown > 0}
+                                className="text-teal-300 hover:text-teal-200 text-sm font-medium disabled:text-gray-400 disabled:cursor-not-allowed transition-colors duration-200"
+                            >
+                                {resendLoading ? (
+                                    <span className="flex items-center justify-center">
+                                        <ArrowPathIcon className="animate-spin h-4 w-4 mr-1" />
+                                        Sending...
+                                    </span>
+                                ) : resendCooldown > 0 ? (
+                                    `Resend OTP in ${resendCooldown}s`
+                                ) : (
+                                    "Resend OTP"
+                                )}
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            )}
         </div>
     );
 }

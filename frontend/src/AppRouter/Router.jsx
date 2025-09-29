@@ -1,5 +1,5 @@
 import React from "react";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom";
 import { Navigate } from "react-router-dom";
 import HomePage from "../Pages/HomePage";
 import Register from "../Pages/RegisterPage";
@@ -14,8 +14,13 @@ import ApplicationPage from "../Componenets/Candidate/ApplicationForm";
 import CandidateDashboard from "../Pages/CandidateDashboard";
 import Profile from "../Componenets/Candidate/Profile";
 import Applications from "../Componenets/Candidate/Applications";
+import Header from "../Componenets/common/header";
 const Router = () => {
-    return (<BrowserRouter>
+
+    const location = useLocation();
+    const hideHeaderPaths = ["/login", "/register"]
+    return (<>
+        {!hideHeaderPaths.includes(location.pathname) && <Header />}
         <Routes>
             <Route path="/" element={<HomePage />} />
             <Route path="/register" element={<Register />} />
@@ -37,7 +42,7 @@ const Router = () => {
             </Route>
 
         </Routes>
-    </BrowserRouter>)
+    </>)
 }
 
 export default Router;

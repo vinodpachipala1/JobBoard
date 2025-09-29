@@ -4,10 +4,8 @@ import cors from "cors";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 import multer from "multer";
-import nodemailer from 'nodemailer';
+import crypto from "crypto";
 
-// Import database and models
-import { db } from "./config/database.js";
 import createTables from "./models/createTables.js";
 import userModel from "./models/userModel.js";
 import companyModel from "./models/companyModel.js";
@@ -25,8 +23,9 @@ const upload = multer({ storage: multer.memoryStorage() });
 // Initialize database tables
 createTables();
 
+// 
 app.use(cors({
-  origin: "https://job-board-tau-three.vercel.app" || "http://localhost:3000",
+  origin:  "https://job-board-tau-three.vercel.app" || "http://localhost:3000",
   credentials: true
 }));
 app.use(express.json());
@@ -83,14 +82,58 @@ app.post("/register", async (req, res) => {
             res.status(500).json({ error: "Server error" });
         }
     }
-}); 
+});
+
+let otpStore = {};
+
+app.post("/send-otp", async (req, res) => {
+  try {
+    const { email } = req.body;
+    
+    const user = await userModel.findUserByEmail(email);
+
+    if(user){
+        return res.status(401).send({ msg: "Email already exist" })
+    }
+    const otp = crypto.randomInt(100000, 999999).toString();
+    otpStore[email] = { otp, expires: Date.now() + 5 * 60 * 1000 };
+
+    await sendEmail(
+        email,
+        "Your OTP Code",
+        `<p>Your OTP code for JobBoard is: <b>${otp}</b></p><p>Valid for 5 minutes.</p>`
+    );
+
+    res.json({ msg: "OTP sent successfully" });
+    } catch (err) {
+        console.error("Error sending OTP:", err);
+        res.status(500).json({ msg: "Failed to send OTP" });
+    }
+});
+
+
+app.post("/verify-otp", (req, res) => {
+    const { email, otp } = req.body;
+    console.log(otp);
+    if (!otpStore[email]) {
+        console.log(otpStore)
+        return res.status(400).json({ msg: "OTP not found" });
+    }
+
+    const { otp: storedOtp, expires } = otpStore[email];
+    if (Date.now() > expires) return res.status(400).json({ msg: "OTP expired" });
+    if (otp !== storedOtp) return res.status(400).json({ msg: "Invalid OTP" });
+
+    delete otpStore[email];
+    res.json({ msg: "OTP verified successfully" });
+});
 
 app.post("/login", async (req, res) => {
     const { email, password } = req.body;
 
     try {
         const user = await userModel.findUserByEmail(email);
-        if (!user) {
+        if (!user) { 
             return res.status(404).json({ error: "User Not Found!" });
         }
 
@@ -289,9 +332,9 @@ app.post("/postApplication", upload.single('resume'), async (req, res) => {
                 candidate.email,
                 "Application Submitted Successfully",
                 `<p>Hi ${candidate.first_name} ${candidate.last_name},</p>
-                 <p>Your application for Job ID <b>${jobId}</b> and Role <b> ${Job.title} </b> has been submitted successfully.</p>
-                 <p> You can View Your application here <a href= "http://localhost:3000/candidate/dashboard/applications">View Applicaton </a></p>
-                 <p>Thank you for applying!</p>`
+                <p>Your application for Job ID <b>${jobId}</b> and Role <b> ${Job.title} </b> has been submitted successfully.</p>
+                <p> You can View Your application here <a href= "http://localhost:3000/candidate/dashboard/applications">View Applicaton </a></p>
+                <p>Thank you for applying!</p>`
             );
         }
 
