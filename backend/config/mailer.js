@@ -1,27 +1,20 @@
-import nodemailer from "nodemailer";
+import sgMail from "@sendgrid/mail";
 import dotenv from "dotenv";
 dotenv.config();
 
-const transporter = nodemailer.createTransport({
-    host: process.env.SMTP_HOST,
-    port: process.env.SMTP_PORT,
-    secure: process.env.SMTP_SECURE === "true", // true for 465, false for 587
-    auth: {
-        user: process.env.SMTP_USER,
-        pass: process.env.SMTP_PASS,
-    },
-});
+// Set SendGrid API Key
+sgMail.setApiKey(process.env.SENDGRID_API_KEY);
 
 export const sendEmail = async (to, subject, html) => {
-    try {
-        await transporter.sendMail({
-            from: `"Job Board" <${process.env.SMTP_USER}>`, // Always use SMTP_USER
-            to,
-            subject,
-            html,
-        });
-        console.log(`✅ Email sent to ${to}`);
-    } catch (err) {
-        console.error("❌ Error sending email:", err);
-    }
+  try {
+    await sgMail.send({
+      to,
+      from: process.env.SENDGRID_SENDER, // Verified sender in SendGrid
+      subject,
+      html,
+    });
+    console.log(`✅ Email sent to ${to}`);
+  } catch (err) {
+    console.error("❌ Error sending email:", err.response?.body || err);
+  }
 };
