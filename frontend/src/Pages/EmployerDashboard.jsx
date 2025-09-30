@@ -92,7 +92,7 @@ const EmployerDashboard = () => {
                         </aside>
 
 
-                        <main className="md:col-span-9 bg-white p-6 rounded-lg shadow border border-gray-200">
+                        <main className="md:col-span-9 bg-white rounded-lg shadow border border-gray-200">
 
                             <Outlet context={{ user }} />
 

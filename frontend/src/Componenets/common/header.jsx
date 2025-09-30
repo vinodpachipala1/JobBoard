@@ -58,12 +58,12 @@ const Header = () => {
                         {/* Changed md:flex to lg:flex */}
                         <ul className="hidden lg:flex items-center space-x-6 mx-4 flex-1 justify-center">
                             <li onClick={() => navigate("/")} className={`cursor-pointer text-gray-200 hover:text-sky-400 transition-colors duration-300 ${location.pathname === "/" ? activeLinkStyle : ""}`}>Home</li>
-                            <li onClick={() => navigate("/jobs")} className={`cursor-pointer text-gray-200 hover:text-sky-400 transition-colors duration-300 ${location.pathname === "/jobs" ? activeLinkStyle : ""
+                            <li onClick={() => navigate("/jobs")} className={`cursor-pointer text-gray-200 hover:text-sky-400 transition-colors duration-300 ${location.pathname.startsWith("/jobs") ? activeLinkStyle : ""
                                 }`}>Job Listings</li>
 
                             {user?.role === 'Employer' && <li onClick={() => navigate("/employer/dashboard/")} className={`cursor-pointer text-gray-200 hover:text-sky-400 transition-colors duration-300 ${location.pathname.startsWith("/employer/dashboard") ? activeLinkStyle : ""
                                 }`}>Employer Dashboard</li>}
-                            {user?.role === 'Candidate' && <li onClick={() => navigate("/candidate/dashboard")} className={`cursor-pointer text-gray-200 hover:text-sky-400 transition-colors duration-300 ${location.pathname === "/candidate/dashboard" ? activeLinkStyle : ""
+                            {user?.role === 'Candidate' && <li onClick={() => navigate("/candidate/dashboard/")} className={`cursor-pointer text-gray-200 hover:text-sky-400 transition-colors duration-300 ${location.pathname.startsWith("/candidate/dashboard") ? activeLinkStyle : ""
                                 }`}>Candidate Dashboard</li>}
                         </ul>
 

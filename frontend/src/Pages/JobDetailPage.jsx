@@ -138,7 +138,7 @@ const JobDetailPage = () => {
             <div className='p-3 flex-1'>
                 {/* Breadcrumb Loading */}
                 <nav className="bg-white border-b border-gray-200">
-                    <div className="container mx-auto px-3 sm:px-6 lg:px-8 py-3">
+                    <div className="max-w-7xl xl:max-w-full mx-auto px-4 sm:px-6 lg:px-8 xl:px-12 2xl:px-16 py-3">
                         <div className="flex items-center space-x-2">
                             <div className="h-3 bg-gray-200 rounded w-16 animate-pulse"></div>
                             <div className="h-3 bg-gray-200 rounded w-3 animate-pulse"></div>
@@ -150,7 +150,7 @@ const JobDetailPage = () => {
                 </nav>
 
                 <div className="flex-1 bg-gray-50">
-                    <div className="container mx-auto px-3 sm:px-6 lg:px-8 py-6">
+                    <div className="max-w-7xl xl:max-w-full mx-auto px-4 sm:px-6 lg:px-8 xl:px-12 2xl:px-16 py-6">
                         <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
                             {/* Main Content Loading */}
                             <main className="lg:col-span-8 space-y-4">
@@ -246,58 +246,58 @@ const JobDetailPage = () => {
             <div className='flex-1'>
                 {/* Breadcrumb Navigation */}
                 <nav className="bg-white border-b border-gray-200">
-                    <div className="container mx-auto px-3 sm:px-6 lg:px-8 py-3">
-                        <div className="flex items-center space-x-1 text-xs sm:text-sm text-gray-600 overflow-x-auto">
+                    <div className="max-w-7xl xl:max-w-full mx-auto px-4 sm:px-6 lg:px-8 xl:px-12 2xl:px-16 py-4">
+                        <div className="flex items-center space-x-1 text-sm text-gray-600 overflow-x-auto">
                             <button onClick={() => navigate("/")} className="hover:text-sky-600 transition-colors whitespace-nowrap">Home</button>
                             <span>›</span>
                             <button onClick={() => navigate("/jobs")} className="hover:text-sky-600 transition-colors whitespace-nowrap">Jobs</button>
                             <span>›</span>
-                            <span className="text-gray-900 font-medium truncate max-w-[120px] sm:max-w-xs ">{job.title}</span>
+                            <span className="text-gray-900 font-medium truncate max-w-[120px] sm:max-w-xs">{job.title}</span>
                         </div>
                     </div>
                 </nav>
 
                 <div className="flex-1 bg-gray-50">
-                    <div className="container mx-auto px-3 sm:px-6 lg:px-8 py-4 sm:py-6">
-                        <div className="grid grid-cols-1 lg:grid-cols-12 gap-4 sm:gap-6 items-start">
+                    <div className="max-w-7xl xl:max-w-full mx-auto px-4 sm:px-6 lg:px-8 xl:px-12 2xl:px-16 py-6">
+                        <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
 
                             {/* Main Content (Left Column) */}
-                            <main className="lg:col-span-8 space-y-4">
+                            <main className="lg:col-span-8 space-y-6">
                                 {/* Job Header Card */}
-                                <div className="bg-white rounded-lg shadow-sm p-4 sm:p-6">
-                                    <div className="flex flex-col gap-3 sm:gap-4">
-                                        <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-3">
+                                <div className="bg-white rounded-lg shadow-sm p-6">
+                                    <div className="flex flex-col gap-4">
+                                        <div className="flex flex-col lg:flex-row lg:items-start justify-between gap-4">
                                             <div className="flex-1">
-                                                <div className="flex flex-col sm:flex-row sm:items-start gap-3 mb-3">
+                                                <div className="flex flex-col sm:flex-row sm:items-start gap-4 mb-4">
                                                     <img
                                                         src={job.logo || 'https://placehold.co/80x80/3b82f6/ffffff?text=CO'}
                                                         alt={job.company}
-                                                        className="w-12 h-12 sm:w-16 sm:h-16 rounded-lg object-cover border flex-shrink-0"
+                                                        className="w-16 h-16 sm:w-20 sm:h-20 rounded-lg object-cover border flex-shrink-0"
                                                     />
                                                     <div className="flex-1 min-w-0">
-                                                        <h1 className="text-lg sm:text-2xl lg:text-3xl font-bold text-gray-900 mb-1 break-words leading-tight">{job.title}</h1>
-                                                        <p className="text-sm sm:text-xl text-sky-600 font-semibold hover:text-sky-700 transition-colors truncate">
+                                                        <h1 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-2 break-words leading-tight">{job.title}</h1>
+                                                        <p className="text-lg sm:text-xl text-sky-600 font-semibold hover:text-sky-700 transition-colors break-words">
                                                             {job.company}
                                                         </p>
                                                     </div>
                                                 </div>
 
-                                                <div className="flex flex-wrap items-center gap-1 text-xs sm:text-base text-gray-600">
-                                                    <span className="flex items-center gap-1 bg-gray-100 px-2 py-1 rounded-full">
+                                                <div className="flex flex-wrap items-center gap-2 text-sm text-gray-600">
+                                                    <span className="flex items-center gap-1 bg-gray-100 px-3 py-1.5 rounded-full">
                                                         📍 {job.location}
                                                     </span>
-                                                    <span className="bg-sky-100 text-sky-800 px-2 py-1 rounded-full font-medium">
+                                                    <span className="bg-sky-100 text-sky-800 px-3 py-1.5 rounded-full font-medium">
                                                         {job.job_type}
                                                     </span>
-                                                    <span className="flex items-center gap-1 bg-gray-100 px-2 py-1 rounded-full">
+                                                    <span className="flex items-center gap-1 bg-gray-100 px-3 py-1.5 rounded-full">
                                                         📅 {formatDate(job.created_at)}
                                                     </span>
-                                                    <span className="flex items-center gap-1 bg-gray-100 px-2 py-1 rounded-full">
+                                                    <span className="flex items-center gap-1 bg-gray-100 px-3 py-1.5 rounded-full">
                                                         ⏰ {formatDate(job.expires_at)}
                                                     </span>
 
                                                     {job.category && (
-                                                        <span className="bg-gray-100 text-gray-800 px-2 py-1 rounded-full font-medium">
+                                                        <span className="bg-gray-100 text-gray-800 px-3 py-1.5 rounded-full font-medium">
                                                             {job.category}
                                                         </span>
                                                     )}
@@ -305,25 +305,25 @@ const JobDetailPage = () => {
                                             </div>
 
                                             {/* Action Buttons */}
-                                            <div className="flex flex-col gap-2 w-full sm:w-auto">
+                                            <div className="flex flex-col gap-3 w-full lg:w-auto">
                                                 {user?.id === job.user_id ? (
-                                                    <div className="text-center p-2 bg-blue-50 text-blue-700 rounded-lg text-xs">
+                                                    <div className="text-center p-3 bg-blue-50 text-blue-700 rounded-lg text-sm border border-blue-200">
                                                         👑 You own this job
                                                     </div>
                                                 ) : (
                                                     <>
                                                         {
                                                             applications.some(app => app.candidate_email === user?.email) ? (
-                                                                <div className="px-3 py-2 bg-green-100 text-green-800 rounded-lg text-center font-medium text-xs">
+                                                                <div className="px-4 py-3 bg-green-100 text-green-800 rounded-lg text-center font-medium text-sm border border-green-200">
                                                                     ✓ Applied
                                                                 </div>
                                                             ) : (
                                                                 <button onClick={Apply}
-                                                                    className="px-4 py-2.5 bg-gradient-to-r from-sky-600 to-blue-600 text-white font-semibold rounded-lg hover:from-sky-700 hover:to-blue-700 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed shadow-sm hover:shadow text-xs sm:text-sm"
+                                                                    className="px-6 py-3 bg-gradient-to-r from-sky-600 to-blue-600 text-white font-semibold rounded-lg hover:from-sky-700 hover:to-blue-700 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed shadow-sm hover:shadow text-sm"
                                                                 >
                                                                     {isApplying ? (
-                                                                        <span className="flex items-center justify-center gap-1">
-                                                                            <div className="animate-spin rounded-full h-3 w-3 border-b-2 border-white"></div>
+                                                                        <span className="flex items-center justify-center gap-2">
+                                                                            <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white"></div>
                                                                             Applying...
                                                                         </span>
                                                                     ) : (
@@ -339,26 +339,25 @@ const JobDetailPage = () => {
 
                                         {/* Employer Tabs */}
                                         {user?.id === job.user_id && (
-                                            <div className="border-b border-gray-200 mt-3">
-                                                <nav className="flex overflow-x-auto -mb-px hide-scrollbar">
-                                                    <div className="flex space-x-4 min-w-max ">
+                                            <div className="border-b border-gray-200 mt-4">
+                                                <nav className="flex overflow-x-auto -mb-px">
+                                                    <div className="flex space-x-6 min-w-max">
                                                         {[
-                                                            { id: 'details', name: 'Details', icon: '📋', shortName: 'Details' },
-                                                            { id: 'applications', name: `Applications (${loadingApplications ? '...' : applications.length})`, icon: '👥', shortName: `Applications (${loadingApplications ? '...' : applications.length})` },
-                                                            { id: 'analytics', name: 'Analytics', icon: '📊', shortName: 'Statstics' }
+                                                            { id: 'details', name: 'Details', icon: '📋' },
+                                                            { id: 'applications', name: `Applications (${loadingApplications ? '...' : applications.length})`, icon: '👥' },
+                                                            { id: 'analytics', name: 'Analytics', icon: '📊' }
                                                         ].map(tab => (
                                                             <button
                                                                 key={tab.id}
                                                                 onClick={() => setActiveTab(tab.id)}
-                                                                className={`py-2 px-1 border-b-2 font-medium text-xs sm:text-base flex items-center gap-1 transition-colors whitespace-nowrap flex-shrink-0 min-w-[70px] ${
+                                                                className={`py-3 px-1 border-b-2 font-medium text-sm flex items-center gap-2 transition-colors whitespace-nowrap flex-shrink-0 ${
                                                                     activeTab === tab.id
                                                                         ? 'border-sky-500 text-sky-600'
                                                                         : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
                                                                 }`}
                                                             >
-                                                                <span className="text-sm sm:text-base">{tab.icon}</span>
-                                                                <span className="hidden sm:inline">{tab.name}</span>
-                                                                <span className="sm:hidden">{tab.shortName}</span>
+                                                                <span className="text-base">{tab.icon}</span>
+                                                                {tab.name}
                                                             </button>
                                                         ))}
                                                     </div>
@@ -369,19 +368,19 @@ const JobDetailPage = () => {
                                 </div>
 
                                 {/* Job Details Content */}
-                                <div className={`bg-white rounded-lg shadow-sm p-4 sm:p-6 ${user?.id === job.user_id && activeTab !== 'details' ? 'hidden' : 'block'}`}>
-                                    <div className="prose max-w-none prose-sm">
-                                        <section className="mb-4 sm:mb-6">
-                                            <h2 className="text-base sm:text-xl font-bold text-gray-900 mb-2 sm:mb-3">Job Description</h2>
-                                            <p className="text-gray-700 leading-relaxed whitespace-pre-wrap text-xs sm:text-lg">
+                                <div className={`bg-white rounded-lg shadow-sm p-6 ${user?.id === job.user_id && activeTab !== 'details' ? 'hidden' : 'block'}`}>
+                                    <div className="prose max-w-none">
+                                        <section className="mb-6">
+                                            <h2 className="text-xl font-bold text-gray-900 mb-4">Job Description</h2>
+                                            <p className="text-gray-700 leading-relaxed whitespace-pre-wrap text-base">
                                                 {job.description || 'No description provided.'}
                                             </p>
                                         </section>
 
-                                        <section className="mb-4 sm:mb-6">
-                                            <h2 className="text-base sm:text-xl font-bold text-gray-900 mb-2 sm:mb-3">Requirements</h2>
-                                            <div className="bg-gray-50 rounded-lg p-3 sm:p-4">
-                                                <div className="whitespace-pre-wrap text-gray-700 leading-relaxed text-xs sm:text-lg">
+                                        <section className="mb-6">
+                                            <h2 className="text-xl font-bold text-gray-900 mb-4">Requirements</h2>
+                                            <div className="bg-gray-50 rounded-lg p-4">
+                                                <div className="whitespace-pre-wrap text-gray-700 leading-relaxed text-base">
                                                     {job.requirements || 'No specific requirements listed.'}
                                                 </div>
                                             </div>
@@ -389,9 +388,9 @@ const JobDetailPage = () => {
 
                                         {job.responsibilities && (
                                             <section>
-                                                <h2 className="text-base sm:text-lg font-bold text-gray-900 mb-2 sm:mb-3">Responsibilities</h2>
-                                                <div className="bg-gray-50 rounded-lg p-3 sm:p-4">
-                                                    <div className="whitespace-pre-wrap text-gray-700 leading-relaxed text-xs sm:text-sm">
+                                                <h2 className="text-xl font-bold text-gray-900 mb-4">Responsibilities</h2>
+                                                <div className="bg-gray-50 rounded-lg p-4">
+                                                    <div className="whitespace-pre-wrap text-gray-700 leading-relaxed text-base">
                                                         {job.responsibilities}
                                                     </div>
                                                 </div>
@@ -403,10 +402,10 @@ const JobDetailPage = () => {
                                 {/* Applications Tab Content */}
                                 {user?.id === job.user_id && activeTab === 'applications' && (
                                     loadingApplications ? (
-                                        <div className="bg-white rounded-lg shadow-sm p-4 sm:p-6">
-                                            <div className="flex items-center justify-center py-6">
-                                                <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-sky-600"></div>
-                                                <span className="ml-2 text-gray-600 text-sm">Loading applications...</span>
+                                        <div className="bg-white rounded-lg shadow-sm p-6">
+                                            <div className="flex items-center justify-center py-8">
+                                                <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-sky-600"></div>
+                                                <span className="ml-3 text-gray-600">Loading applications...</span>
                                             </div>
                                         </div>
                                     ) : (
@@ -421,30 +420,30 @@ const JobDetailPage = () => {
                             </main>
 
                             {/* Sidebar (Right Column) */}
-                            <aside className="lg:col-span-4 space-y-4">
+                            <aside className="lg:col-span-4 space-y-6">
                                 {/* Job Summary Card */}
-                                <div className="bg-white rounded-lg shadow-sm p-4 text-sm sm:text-base">
-                                    <h3 className="text-sm sm:text-lg font-semibold text-gray-900 border-b pb-2 mb-3">Job Overview</h3>
-                                    <div className="space-y-2">
+                                <div className="bg-white rounded-lg shadow-sm p-6">
+                                    <h3 className="text-lg font-semibold text-gray-900 border-b pb-3 mb-4">Job Overview</h3>
+                                    <div className="space-y-4">
                                         <div className="flex justify-between items-center">
-                                            <span className="text-gray-600 font-medium ">Salary</span>
+                                            <span className="text-gray-600 font-medium">Salary</span>
                                             <span className="text-gray-900 font-semibold">{job.salary_range || 'Not specified'}</span>
                                         </div>
                                         <div className="flex justify-between items-center">
-                                            <span className="text-gray-600 font-medium ">Type</span>
-                                            <span className="text-gray-900 ">{job.job_type || job.type}</span>
+                                            <span className="text-gray-600 font-medium">Type</span>
+                                            <span className="text-gray-900">{job.job_type || job.type}</span>
                                         </div>
                                         <div className="flex justify-between items-center">
                                             <span className="text-gray-600 font-medium">Category</span>
-                                            <span className="text-gray-900 ">{job.category || 'Not specified'}</span>
+                                            <span className="text-gray-900">{job.category || 'Not specified'}</span>
                                         </div>
                                         <div className="flex justify-between items-center">
-                                            <span className="text-gray-600 font-medium ">Experience</span>
-                                            <span className="text-gray-900 ">{job.experience_level || 'Not specified'}</span>
+                                            <span className="text-gray-600 font-medium">Experience</span>
+                                            <span className="text-gray-900">{job.experience_level || 'Not specified'}</span>
                                         </div>
                                         <div className="flex justify-between items-center">
-                                            <span className="text-gray-600 font-medium ">Status</span>
-                                            <span className={`px-2 py-0.5 rounded-full  font-semibold ${isJobActive
+                                            <span className="text-gray-600 font-medium">Status</span>
+                                            <span className={`px-3 py-1 rounded-full text-sm font-semibold ${isJobActive
                                                 ? 'bg-green-100 text-green-800'
                                                 : 'bg-red-100 text-red-800'
                                                 }`}>
@@ -452,8 +451,8 @@ const JobDetailPage = () => {
                                             </span>
                                         </div>
                                         <div className="flex justify-between items-center">
-                                            <span className="text-gray-600 font-medium text-xs sm:text-sm">Expires</span>
-                                            <span className="text-gray-900 text-xs sm:text-sm">
+                                            <span className="text-gray-600 font-medium">Expires</span>
+                                            <span className="text-gray-900 font-semibold">
                                                 {daysUntilExpiry > 0 ? `${daysUntilExpiry}d` : 'Expired'}
                                             </span>
                                         </div>
@@ -461,27 +460,27 @@ const JobDetailPage = () => {
                                 </div>
 
                                 {/* Company Info Card */}
-                                <div className="bg-white rounded-lg shadow-sm p-4 text-sm sm:text-base">
-                                    <h3 className=" font-semibold text-gray-900 border-b pb-2 mb-3 sm:text-xl">Company</h3>
-                                    <div className="flex items-center gap-2 sm:gap-3 mb-3">
+                                <div className="bg-white rounded-lg shadow-sm p-6">
+                                    <h3 className="text-lg font-semibold text-gray-900 border-b pb-3 mb-4">Company</h3>
+                                    <div className="flex items-center gap-4 mb-4">
                                         <img
                                             src={job?.logo || 'https://placehold.co/60x60/3b82f6/ffffff?text=CO'}
                                             alt={job?.company}
-                                            className="w-10 h-10 sm:w-14 sm:h-14 rounded-lg object-cover border flex-shrink-0"
+                                            className="w-16 h-16 rounded-lg object-cover border flex-shrink-0"
                                         />
                                         <div className="min-w-0 flex-1">
-                                            <h4 className="font-semibold text-gray-900 t truncate">{job.company || job.company?.name}</h4>
-                                            <p className=" text-gray-600 line-clamp-2 break-words mt-0.5">
+                                            <h4 className="font-semibold text-gray-900 truncate text-lg">{job.company || job.company?.name}</h4>
+                                            <p className="text-gray-600 line-clamp-2 break-words mt-1 text-sm">
                                                 {job?.company_description || 'Company information not available.'}
                                             </p>
                                         </div>
                                     </div>
-                                    <div className="space-y-1 sm:text-base">
+                                    <div className="space-y-2">
                                         <a
                                             href={job?.website}
                                             target="_blank"
                                             rel="noopener noreferrer"
-                                            className="flex items-center gap-1 text-sky-600 hover:text-sky-700 transition-colors text-xs"
+                                            className="flex items-center gap-2 text-sky-600 hover:text-sky-700 transition-colors text-sm font-medium"
                                         >
                                             🌐 Visit Website
                                         </a>
@@ -489,13 +488,13 @@ const JobDetailPage = () => {
                                 </div>
 
                                 {/* Share Job Card */}
-                                <div className="bg-white rounded-lg shadow-sm p-4">
-                                    <h3 className="text-sm sm:text-xl font-semibold text-gray-900 border-b pb-2 mb-3">Share Job</h3>
-                                    <div className="grid grid-cols-2 gap-2">
+                                <div className="bg-white rounded-lg shadow-sm p-6">
+                                    <h3 className="text-lg font-semibold text-gray-900 border-b pb-3 mb-4">Share Job</h3>
+                                    <div className="grid grid-cols-2 gap-3">
                                         {['LinkedIn', 'Twitter', 'Facebook', 'Email'].map(platform => (
                                             <button
                                                 key={platform}
-                                                className="py-1.5 bg-gray-100 text-gray-700 rounded text-xs sm:text-base font-medium hover:bg-gray-200 transition-colors"
+                                                className="py-2.5 bg-gray-100 text-gray-700 rounded-lg text-sm font-medium hover:bg-gray-200 transition-colors"
                                             >
                                                 {platform}
                                             </button>

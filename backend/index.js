@@ -73,7 +73,7 @@ app.post("/register", async (req, res) => {
 
     try {
         const hashedPassword = await bcrypt.hash(password, saltrounds);
-        const user = await userModel.createUser(email, fname, lname, hashedPassword, role);
+        const user = await userModel.createUser(email.toLowerCase(), fname, lname, hashedPassword, role);
         res.json({ message: "Registration successful", user: { id: user.id, email: user.email } });
     } catch (err) {
         console.log(err);
@@ -89,20 +89,16 @@ app.post("/send-otp", async (req, res) => {
     try {
         const { email } = req.body;
 
-        // Check if email already exists
-        const user = await userModel.findUserByEmail(email);
+        const user = await userModel.findUserByEmail(email.toLowerCase());
         if (user) {
             return res.status(401).json({ msg: "Email already exists" });
         }
 
-        // Generate OTP and expiry
         const otp = crypto.randomInt(100000, 999999).toString();
         const expiresAt = new Date(Date.now() + 5 * 60 * 1000); // 5 min expiry
 
-        // Store OTP in DB
         await otpModel.upsertOtp(email, otp, expiresAt);
 
-        // Send OTP email
         await sendEmail(
             email,
             "Your OTP Code - JobBoard",
@@ -115,7 +111,7 @@ app.post("/send-otp", async (req, res) => {
                         ${otp}
                     </div>
                     <p style="color: #ef4444; font-size: 13px; margin: 8px 0 0 0;">
-                        ⏱️ Expires in 5 minutes
+                        Expires in 5 minutes
                     </p>
                 </div>
         
@@ -358,7 +354,7 @@ app.post("/postApplication", upload.single('resume'), async (req, res) => {
         const Job = await jobModel.findJobById(jobId);
 
         if (candidate) {
-            await sendEmail( 
+            await sendEmail(
                 candidate.email,
                 "Application Submitted Successfully",
                 `
