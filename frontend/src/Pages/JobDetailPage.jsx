@@ -268,21 +268,21 @@ const JobDetailPage = () => {
                                     <div className="flex flex-col gap-4">
                                         <div className="flex flex-col lg:flex-row lg:items-start justify-between gap-4">
                                             <div className="flex-1">
-                                                <div className="flex flex-col sm:flex-row sm:items-start gap-4 mb-4">
+                                                <div className="flex flex-row items-center gap-4 mb-4">
                                                     <img
                                                         src={job.logo || 'https://placehold.co/80x80/3b82f6/ffffff?text=CO'}
                                                         alt={job.company}
-                                                        className="w-16 h-16 sm:w-20 sm:h-20 rounded-lg object-cover border flex-shrink-0"
+                                                        className="w-14 h-14 sm:w-20 sm:h-20 rounded-lg object-cover border flex-shrink-0"
                                                     />
                                                     <div className="flex-1 min-w-0">
-                                                        <h1 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-2 break-words leading-tight">{job.title}</h1>
-                                                        <p className="text-lg sm:text-xl text-sky-600 font-semibold hover:text-sky-700 transition-colors break-words">
+                                                        <h1 className="text-lg sm:text-2xl font-bold text-gray-900 mb-2 break-words leading-tight">{job.title}</h1>
+                                                        <p className="text-base sm:text-xl text-sky-600 font-semibold hover:text-sky-700 transition-colors break-words">
                                                             {job.company}
                                                         </p>
                                                     </div>
                                                 </div>
 
-                                                <div className="flex flex-wrap items-center gap-2 text-sm text-gray-600">
+                                                <div className="flex flex-wrap items-center gap-2 text-xs sm:text-sm text-gray-600">
                                                     <span className="flex items-center gap-1 bg-gray-100 px-3 py-1.5 rounded-full">
                                                         📍 {job.location}
                                                     </span>
@@ -371,19 +371,19 @@ const JobDetailPage = () => {
                                 <div className={`bg-white rounded-lg shadow-sm p-6 ${user?.id === job.user_id && activeTab !== 'details' ? 'hidden' : 'block'}`}>
                                     <div className="prose max-w-none">
                                         <section className="mb-6">
-                                            <h2 className="text-xl font-bold text-gray-900 mb-4">Job Description</h2>
-                                            <p className="text-gray-700 leading-relaxed whitespace-pre-wrap text-base">
+                                            <h2 className="text-xl sm:text-2xl font-bold text-gray-900 mb-4">Job Description</h2>
+                                            <p className="text-gray-700 leading-relaxed whitespace-pre-wrap text-sm sm:text-lg">
                                                 {job.description || 'No description provided.'}
                                             </p>
                                         </section>
 
                                         <section className="mb-6">
-                                            <h2 className="text-xl font-bold text-gray-900 mb-4">Requirements</h2>
-                                            <div className="bg-gray-50 rounded-lg p-4">
-                                                <div className="whitespace-pre-wrap text-gray-700 leading-relaxed text-base">
+                                            <h2 className="text-xl sm:text-2xl font-bold text-gray-900 mb-4">Requirements</h2>
+                                            {/* < className="bg-gray-50 rounded-lg p-4"> */}
+                                                <p className="text-gray-700 leading-relaxed whitespace-pre-wrap text-sm sm:text-lg">
                                                     {job.requirements || 'No specific requirements listed.'}
-                                                </div>
-                                            </div>
+                                                </p>
+                                            {/* </div> */}
                                         </section>
 
                                         {job.responsibilities && (

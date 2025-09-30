@@ -38,7 +38,7 @@ const ViewApplications = (props) => {
                                         {/* Candidate Info */}
                                         <div className="flex items-start gap-3 sm:gap-4 flex-1">
                                             <div className="relative flex-shrink-0">
-                                                <div className="w-12 h-12 sm:w-16 sm:h-16 bg-gradient-to-br from-sky-100 to-blue-100 rounded-xl sm:rounded-2xl flex items-center justify-center shadow-sm group-hover:shadow-md transition-shadow">
+                                                <div className="w-10 h-10 sm:w-16 sm:h-16 bg-gradient-to-br from-sky-100 to-blue-100 rounded-xl sm:rounded-2xl flex items-center justify-center shadow-sm group-hover:shadow-md transition-shadow">
                                                     <span className="text-lg sm:text-2xl font-bold text-sky-600">
                                                         {application.candidate_fname?.charAt(0) || application.candidateName?.charAt(0) || 'U'}
                                                     </span>
@@ -57,7 +57,7 @@ const ViewApplications = (props) => {
                                                     <h4 className="font-bold text-gray-900 text-base sm:text-lg">
                                                         {application.candidate_fname + " " + application.candidate_lname}
                                                     </h4>
-                                                    <span className={`px-2 py-1 sm:px-3 sm:py-1.5 rounded-full text-xs font-semibold ${application.status === 'Accepted' ? 'bg-green-100 text-green-800 border border-green-200' :
+                                                    <span className={`px-2 py-1  sm:px-3 sm:py-1.5 text-right rounded-full text-xs font-semibold max-w-fit ${application.status === 'Accepted' ? 'bg-green-100 text-green-800 border border-green-200' :
                                                             application.status === 'Rejected' ? 'bg-red-100 text-red-800 border border-red-200' :
                                                                 application.status === 'Shortlisted' ? 'bg-blue-100 text-blue-800 border border-blue-200' :
                                                                     application.status === 'Reviewed' ? 'bg-yellow-100 text-yellow-800 border border-yellow-200' :
