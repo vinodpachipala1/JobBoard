@@ -23,10 +23,10 @@ const upload = multer({ storage: multer.memoryStorage() });
 
 // Initialize database tables
 createTables();
-
-// 
+const Frontend_url =  "https://job-board-tau-three.vercel.app"
+//  ||
 app.use(cors({
-  origin: "https://job-board-tau-three.vercel.app" || "http://localhost:3000",
+  origin: Frontend_url || "http://localhost:3000",
   credentials: true
 }));
 app.use(express.json());
@@ -105,8 +105,25 @@ app.post("/send-otp", async (req, res) => {
         // Send OTP email
         await sendEmail(
             email,
-            "Your OTP Code",
-            `<p>Your OTP code for JobBoard is: <b>${otp}</b></p><p>Valid for 5 minutes.</p>`
+            "Your OTP Code - JobBoard",
+            `
+            <div style="font-family: Arial, sans-serif; max-width: 400px; margin: 0 auto;">
+                <p>Your JobBoard verification code is:</p>
+        
+                <div style="text-align: center; margin: 25px 0;">
+                    <div style="font-size: 28px; font-weight: bold; color: #0ea5e9; letter-spacing: 6px;">
+                        ${otp}
+                    </div>
+                    <p style="color: #ef4444; font-size: 13px; margin: 8px 0 0 0;">
+                        ⏱️ Expires in 5 minutes
+                    </p>
+                </div>
+        
+                <p style="color: #64748b; font-size: 12px;">
+                    If you didn't request this, please disregard this email.
+                </p>
+            </div>
+            `
         );
 
         res.json({ msg: "OTP sent successfully" });
@@ -344,12 +361,39 @@ app.post("/postApplication", upload.single('resume'), async (req, res) => {
             await sendEmail( 
                 candidate.email,
                 "Application Submitted Successfully",
-                `<p>Hi ${candidate.first_name} ${candidate.last_name},</p>
-                <p>Your application for Job ID <b>${jobId}</b> and Role <b> ${Job.title} </b> has been submitted successfully.</p>
-                <p> You can View Your application here <a href= "http://localhost:3000/candidate/dashboard/applications">View Applicaton </a></p>
-                <p>Thank you for applying!</p>`
-            );
-        }
+                `
+                <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
+                    <div style="background: #3b82f6; color: white; padding: 20px; text-align: center;">
+                        <h1 style="margin: 0;">Application Submitted! 🎉</h1>
+                    </div>
+            
+                    <div style="padding: 20px; background: #f8fafc;">
+                        <p>Hi <strong>${candidate.first_name} ${candidate.last_name}</strong>,</p>
+                
+                        <p>Your application has been submitted successfully for:</p>
+                
+                        <div style="background: white; padding: 15px; border-radius: 5px; margin: 15px 0; border-left: 4px solid #3b82f6;">
+                        <p style="margin: 5px 0;"><strong>Job Role:</strong> ${Job.title}</p>
+                        <p style="margin: 5px 0;"><strong>Job ID:</strong> ${jobId}</p>
+                    </div>
+                
+                    <p>Track your application status:</p>
+                    <a href="${Frontend_url}/candidate/dashboard/applications" 
+                        style="display: inline-block; background: #3b82f6; color: white; padding: 12px 24px; 
+                        text-decoration: none; border-radius: 5px; font-weight: bold;">
+                        View Application Status
+                    </a>
+                
+                    <p style="margin-top: 20px;">We'll review your application and get back to you soon.</p>
+                
+                    <div style="margin-top: 25px; padding-top: 15px; border-top: 1px solid #e5e7eb;">
+                        <p>Best regards,<br><strong>The Hiring Team</strong></p>
+                    </div>
+                </div>
+            </div>
+            `
+        );
+    }
 
         res.json({
             success: true,
@@ -409,18 +453,26 @@ app.put("/updateApplicationStatus", async (req, res) => {
         const candidate = await userModel.findUserById(application.candidate_id);
         console.log(application)
         if (candidate) {
-            const jobLink = `http://localhost:3000/candidate/dashboard/applications`;
 
             await sendEmail(
                 candidate.email,
                 "Application Status Updated",
                 `
-                <p>Hi ${candidate.first_name} ${candidate.last_name},</p>
-                <p>Your application status has been updated to: <b>${application_status}</b>.</p>
-                <p>You can view the details here: 
-                    <a href="${jobLink}" target="_blank" style="background-color:#0ea5e9;color:white;padding:6px 12px;border-radius:5px;text-decoration:none;">View Application</a>
-                </p>
-                <p>Thank you!</p>
+                <div style="font-family: Arial, sans-serif; max-width: 500px; margin: 0 auto;">
+                    <p>Hi <strong>${candidate.first_name} ${candidate.last_name}</strong>,</p>
+        
+                    <p>Your application status has been updated to: <strong>${application_status}</strong></p>
+        
+                    <div style="text-align: center; margin: 20px 0;">
+                        <a href="${Frontend_url}/candidate/dashboard/applications" 
+                            style="background: #0ea5e9; color: white; padding: 8px 16px; 
+                            text-decoration: none; border-radius: 4px; font-size: 14px;">
+                            View Application
+                        </a>
+                    </div>
+        
+                    <p style="color: #64748b; font-size: 14px;">Best regards,<br>The Hiring Team</p>
+                </div>
                 `
             );
         }

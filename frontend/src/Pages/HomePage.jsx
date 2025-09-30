@@ -6,6 +6,7 @@ import BASE_URL from '../Componenets/Path';
 
 const HomePage = () => {
     const navigate = useNavigate();
+    const [user, setUser] = useState(null);
     const [loading, SetLoading] = useState(false);
     const [Jobs, SetJobs] = useState(null);
     const [searchQuery, setSearchQuery] = useState({
@@ -16,6 +17,26 @@ const HomePage = () => {
     const featuredJobs = Jobs?.sort((a, b) => { 
         return new Date(b.created_at) - new Date(a.created_at) 
     }).slice(0, 6);
+
+    useEffect(() => {
+        const token = localStorage.getItem("token");
+        if (!token) {
+            console.log("no token")
+        }
+        if (token) {
+            const getUser = async () => {
+
+                try {
+                    const res = await axios.get(`${BASE_URL}/verify-login`, { headers: { Authorization: `Bearer ${token}` }, })
+                    setUser(res.data.user.user)
+                }
+                catch (err) {
+                    console.log(err)
+                }
+            }
+            getUser();
+        }
+    }, [])
 
     useEffect(() => {
         const getJobs = async () => {
@@ -100,10 +121,13 @@ const HomePage = () => {
                                 </button>
                             </div>
                         </form>
+                        <div className="lg:hidden m-6 flex space-x-4">
                         {/* Mobile Login/Register Buttons */}
-                        <div className="md:hidden m-6 flex space-x-4">
+                        {!user && <>
                             <p onClick={() => navigate("/login")} className="px-6 py-2 text-sm font-semibold bg-gray-200/80 text-gray-800 rounded-md cursor-pointer">Login</p>
                             <p onClick={() => navigate("/register")} className="px-6 py-2 text-sm font-semibold bg-sky-600 text-white rounded-md cursor-pointer ">Register</p>
+                            </>
+                        }
                         </div>
                     </div>
                 </section>
