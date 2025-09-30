@@ -97,7 +97,7 @@ app.post("/send-otp", async (req, res) => {
         const otp = crypto.randomInt(100000, 999999).toString();
         const expiresAt = new Date(Date.now() + 5 * 60 * 1000); // 5 min expiry
 
-        await otpModel.upsertOtp(email, otp, expiresAt);
+        await otpModel.upsertOtp(email.toLowerCase(), otp, expiresAt);
 
         await sendEmail(
             email,
@@ -136,7 +136,7 @@ app.post("/verify-otp", async (req, res) => {
         const { email, otp } = req.body;
 
         // Get OTP record from DB
-        const record = await otpModel.findOtpByEmail(email);
+        const record = await otpModel.findOtpByEmail(email.toLowerCase());
         if (!record) return res.status(400).json({ msg: "OTP not found" });
 
         const { otp: storedOtp, expires_at } = record;
@@ -145,7 +145,7 @@ app.post("/verify-otp", async (req, res) => {
         if (otp !== storedOtp) return res.status(400).json({ msg: "Invalid OTP" });
 
         // Delete OTP after successful verification
-        await otpModel.deleteOtp(email);
+        await otpModel.deleteOtp(email.toLowerCase());
 
         res.json({ msg: "OTP verified successfully" });
     } catch (err) {
@@ -158,7 +158,7 @@ app.post("/login", async (req, res) => {
     const { email, password } = req.body;
 
     try {
-        const user = await userModel.findUserByEmail(email);
+        const user = await userModel.findUserByEmail(email.toLowerCase());
         if (!user) { 
             return res.status(404).json({ error: "User Not Found!" });
         }
