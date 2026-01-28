@@ -11,7 +11,7 @@ dotenv.config();
 //   try {
 //     await sgMail.send({
 //       to,
-//       from: process.env.SENDGRID_SENDER, // Verified sender in SendGrid
+//       from: process.env.SENDGRID_SENDER,
 //       subject,
 //       html,
 //     });
@@ -30,7 +30,7 @@ export const sendEmail = async (to, subject, html) => {
     await axios.post(
       'https://api.brevo.com/v3/smtp/email',
       {
-        sender: { name: "Job Board", email: "jobboad08@gmail.com" }, // Change this to your login email
+        sender: { name: "Job Board", email: "jobboad08@gmail.com" },
         to: [{ email: to }],
         subject: subject,
         htmlContent: html,
