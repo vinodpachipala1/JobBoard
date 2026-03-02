@@ -34,7 +34,7 @@ const Register = () => {
     const [otp, setOtp] = useState("");
     const [showOtpModal, setShowOtpModal] = useState(false);
     const [otpLoading, setOtpLoading] = useState(false);
-    const [emailVerified, setEmailVerified] = useState(false);
+    
     const [tempUserData, setTempUserData] = useState(null);
     const [resendLoading, setResendLoading] = useState(false);
     const [resendCooldown, setResendCooldown] = useState(0);
@@ -102,7 +102,7 @@ const Register = () => {
         if (verify()) {
             SetButtonLoad(true)
             try {
-                const otpResponse = await axios.post(`${BASE_URL}/send-otp`, {
+                await axios.post(`${BASE_URL}/send-otp`, {
                     email: regData.email,
                     fname: regData.fname
                 });
@@ -140,9 +140,8 @@ const Register = () => {
             });
             console.log(response.data.msg)
             if (response.data.msg === "OTP verified successfully") {
-                setEmailVerified(true);
-                
-                const registerResponse = await axios.post(`${BASE_URL}/register`, tempUserData);
+               
+                await axios.post(`${BASE_URL}/register`, tempUserData);
                 
                 setOtpLoading(false);
                 setShowOtpModal(false);
