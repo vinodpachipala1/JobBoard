@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from 'react';
-import { Link, useOutletContext, useNavigate } from 'react-router-dom';
+import { useEffect, useState } from 'react';
+import { useOutletContext, useNavigate } from 'react-router-dom';
 import BASE_URL from '../Path';
 import axios from 'axios';
 

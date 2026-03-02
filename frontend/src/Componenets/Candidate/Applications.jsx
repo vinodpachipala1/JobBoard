@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { useOutletContext, Link } from 'react-router-dom';
 import axios from 'axios';
 import BASE_URL from '../Path';
@@ -271,7 +271,7 @@ const Applications = () => {
                                         <div className="flex-1">
                                             <div className="flex justify-between items-center">
                                                 <span className="font-medium capitalize">
-                                                    {getStatusDisplay(selectedApplication.status == "Applied" ? "Pending" : selectedApplication.status)}
+                                                    {getStatusDisplay(selectedApplication.status === "Applied" ? "Pending" : selectedApplication.status)}
                                                 </span>
                                                 <span className="text-sm text-gray-500">
                                                     {formatDateTime(selectedApplication.status_updated_at || selectedApplication.updated_at)}

@@ -1,14 +1,12 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import Footer from '../Componenets/common/footer';
 import axios from 'axios';
 import BASE_URL from '../Componenets/Path';
-import { useLocation } from 'react-router-dom';
 import ViewApplications from '../Componenets/Employeer/ViewApplicatons';
 import Analytics from '../Componenets/Employeer/Analytics';
 
 const JobDetailPage = () => {
-    const location = useLocation();
     const { id } = useParams();
     const [job, SetJob] = useState({});
     const navigate = useNavigate();

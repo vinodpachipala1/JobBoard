@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { useOutletContext } from 'react-router-dom';
 import axios from 'axios';
 import BASE_URL from '../Path';
@@ -70,7 +70,7 @@ const Profile = () => {
     const handleSave = async () => {
         setIsSaving(true);
         try {
-            const token = localStorage.getItem("token");
+            
             await axios.post(`${BASE_URL}/candidate/profile`, { formData, userId: user.id });
             setProfile(formData);
             setIsEditing(false);

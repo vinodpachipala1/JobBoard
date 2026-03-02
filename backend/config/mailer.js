@@ -1,10 +1,9 @@
-import sgMail from "@sendgrid/mail";
+// import sgMail from "@sendgrid/mail";
 import dotenv from "dotenv";
 import axios from "axios";
-
 dotenv.config();
 
-// Set SendGrid API Key
+// // Set SendGrid API Key
 // sgMail.setApiKey(process.env.SENDGRID_API_KEY);
 
 // export const sendEmail = async (to, subject, html) => {
@@ -23,7 +22,7 @@ dotenv.config();
 
 export const sendEmail = async (to, subject, html) => {
   
-  const apiKey = process.env.BREVO_API_KEY; 
+  const apiKey = process.env.BREVO_API_KEY;
 
   
   try {
